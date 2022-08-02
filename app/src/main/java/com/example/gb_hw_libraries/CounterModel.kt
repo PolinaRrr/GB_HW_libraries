@@ -3,6 +3,10 @@ package com.example.gb_hw_libraries
 class CounterModel {
     private val counter = mutableListOf(0, 0, 0)
 
+    fun getCounter(): MutableList<Int>{
+        return counter
+    }
+
      fun getCurrent(position: Int): Int {
         return counter[position]
     }
