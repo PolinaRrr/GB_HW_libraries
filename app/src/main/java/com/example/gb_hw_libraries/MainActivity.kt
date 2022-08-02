@@ -17,20 +17,23 @@ class MainActivity : AppCompatActivity() {
         displayCounterValue()
         with(binding) {
             button01.setOnClickListener {
-                button01.text = increaseCounter(0).toString()
+                increaseCounter(0)
+                button01.text = counter[0].toString()
             }
             button02.setOnClickListener {
-                button01.text = increaseCounter(1).toString()
+                increaseCounter(1)
+                button02.text = counter[1].toString()
             }
             button03.setOnClickListener {
-                button01.text = increaseCounter(2).toString()
+                increaseCounter(2)
+                button03.text = counter[2].toString()
             }
         }
 
     }
 
     private fun increaseCounter(position: Int) {
-        ++counter[position]
+        counter[position] = (counter[position] + 1)
     }
 
     private fun displayCounterValue() {
@@ -51,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         super.onRestoreInstanceState(savedInstanceState)
 
         val array = savedInstanceState.getIntArray(KEY_COUNTERS)
-        counter.let { list->
+        counter.let { list ->
             list.clear()
             array?.toList()?.let {
                 list.addAll(it)
