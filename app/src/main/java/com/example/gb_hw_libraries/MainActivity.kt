@@ -4,62 +4,42 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.gb_hw_libraries.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(),MainView {
     lateinit var binding: ActivityMainBinding
+    private lateinit var presenter: CounterPresenter
 
-    private val counter = mutableListOf(0, 0, 0)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        displayCounterValue()
+        initPresenter()
         with(binding) {
             button01.setOnClickListener {
-                increaseCounter(0)
-                button01.text = counter[0].toString()
+                presenter.onCounterClick(0)
             }
             button02.setOnClickListener {
-                increaseCounter(1)
-                button02.text = counter[1].toString()
+               presenter.onCounterClick(1)
             }
             button03.setOnClickListener {
-                increaseCounter(2)
-                button03.text = counter[2].toString()
+                presenter.onCounterClick(2)
             }
         }
 
     }
-
-    private fun increaseCounter(position: Int) {
-        counter[position] = (counter[position] + 1)
-    }
-
-    private fun displayCounterValue() {
-        with(binding) {
-            button01.text = counter[0].toString()
-            button02.text = counter[1].toString()
-            button03.text = counter[2].toString()
-        }
+    private fun initPresenter() {
+        presenter = CounterPresenter(this,model = CounterModel())
     }
 
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putIntArray(KEY_COUNTERS, counter.toIntArray())
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-
-        val array = savedInstanceState.getIntArray(KEY_COUNTERS)
-        counter.let { list ->
-            list.clear()
-            array?.toList()?.let {
-                list.addAll(it)
+    override fun setText(counter: String,index:Int) {
+        with(binding){
+            when(index){
+                0->{button01.text = counter}
+                1->{button02.text = counter}
+                2->{button03.text = counter}
             }
         }
-        displayCounterValue()
     }
 }
