@@ -60,5 +60,6 @@ class MainActivity : AppCompatActivity() {
                 list.addAll(it)
             }
         }
+        displayCounterValue()
     }
 }
