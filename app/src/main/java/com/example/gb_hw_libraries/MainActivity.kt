@@ -1,39 +1,37 @@
 package com.example.gb_hw_libraries
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.gb_hw_libraries.databinding.ActivityMainBinding
+import moxy.MvpAppCompatActivity
+import moxy.ktx.moxyPresenter
 
-class MainActivity : AppCompatActivity(), MainView {
+class MainActivity : MvpAppCompatActivity(), MainView {
     lateinit var binding: ActivityMainBinding
-    private lateinit var presenter: CounterPresenter
+
+    private val presenter by moxyPresenter { CounterPresenter(CounterModel()) }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        initPresenter()
+        //initPresenter()
         with(binding) {
             button01.setOnClickListener {
-                presenter.onCounterClick(KEY_INDEX_BTN_01)
+                presenter.onFirstCounterClick(KEY_INDEX_BTN_01)
             }
             button02.setOnClickListener {
-                presenter.onCounterClick(KEY_INDEX_BTN_02)
+                presenter.onSecondCounterClick(KEY_INDEX_BTN_02)
             }
             button03.setOnClickListener {
-                presenter.onCounterClick(KEY_INDEX_BTN_03)
+                presenter.onThirdCounterClick(KEY_INDEX_BTN_03)
             }
         }
 
     }
 
-    private fun initPresenter() {
-        presenter = CounterPresenter(this, model = CounterModel())
-    }
 
-
-    override fun setText(counter: String, index: Int) {
+    private fun setText(counter: String, index: Int) {
         with(binding) {
             when (index) {
                 KEY_INDEX_BTN_01 -> {
@@ -68,5 +66,21 @@ class MainActivity : AppCompatActivity(), MainView {
                 setText(presenter.getCurrentCounter()[i].toString(), i)
             }
         }
+
+    }
+
+    override fun setFirstText(counter: String, index: Int) = with(binding) {
+        button01.text = counter
+
+    }
+
+    override fun setSecondText(counter: String, index: Int) = with(binding) {
+        button02.text = counter
+
+    }
+
+    override fun setThirdText(counter: String, index: Int) = with(binding) {
+        button03.text = counter
+
     }
 }
